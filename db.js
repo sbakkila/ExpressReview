@@ -24,12 +24,6 @@ var Puppy = db.define('puppy', {
     type: Sequelize.VIRTUAL
   }
 }, {
-  hooks: {
-    //
-  },
-  classMethods: {
-
-  },
   instanceMethods: {
     greet: function() {
       return this.name;
@@ -38,20 +32,21 @@ var Puppy = db.define('puppy', {
   getterMethods: {
     //
   },
-  setterMethods: {
-    //
+})
+
+var FaveLocation = db.define('faveLocation', {
+  address: {
+    type: Sequelize.STRING,
+    allowNull: false,
   }
 })
 
-var Location = db.define('location', {
-  address: {
-    type: Sequelize.STRING
-  }
-})
+Puppy.hasOne(FaveLocation) // this puts puppy foreign key/id on fave location model schema
+// Puppy.belongsTo(FaveLocation) // --> this puts faveLocation foreign key/id on puppy model schema
 
 module.exports = {
   Puppy,
-  Location,
+  FaveLocation,
   db
 }
 

@@ -15,7 +15,7 @@ app.use('/puppies', router);
 
 
 // this is our DEFAULT response, and remember that in Express ORDER MATTERS
-// Turned into error middleware
+// Turned into error middleware below
 // app.use('*', (req, res, next) => {
 //     res.send('nothing matched i am very sad')
 // })
