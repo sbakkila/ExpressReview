@@ -21,27 +21,20 @@ router.post('/addAPuppy', (req, res, next) => {
 
 // gets one puppy
 router.get('/:id', (req, res, next) => {
-    if(puppies[Number(req.params.id)]){
-        res.send(puppies[Number(req.params.id)])
-    } else {
-        res.sendStatus(404)
-    }
-})
-// updates a puppy
-router.put('/:id', (req, res, next) => {
-    if(puppies[Number(req.params.id)]){
-        // reassign the puppy
-        puppies[Number(req.params.id)] = req.body
-        res.sendStatus(302)
-    } else {
-        res.sendStatus(404)
-    }
+    Puppy.findById(req.params.id)
+    .then(res.send.bind(res)) //fancy way of not having to use callback fxn (use same mechanics of not having to pass args to next)
+    .catch(next)
 })
 
-// adds a puppy
-router.post('/', (req, res, next) => {
-    puppies.push(req.body)
-    res.sendStatus(201) // 201 is created
+// updates a puppy
+router.put('/:id', (req, res, next) => {
+    Puppy.update(req.body, {
+        where: {id: req.params.id},
+        returning: true //must set this to true in order to "return" updated instance to .then
+    })
+    .then( updatePuppy => {res.status(302).send(puppy)})    //update promise resolves with two things:
+    .catch(next)                                            // 1. the updated instance
+                                                            // 2. the number of "rows" in db that were affected by update
 })
 
 module.exports = router;
