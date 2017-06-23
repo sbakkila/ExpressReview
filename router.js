@@ -1,10 +1,24 @@
-const router = require('express').Router();
-const puppies = require('./puppiesDB.js');
+const router = require('express').Router()
+    , models = require('./db')
+    , Puppy = models.Puppy;
 
 // gets all puppies
 router.get('/', (req, res, next) => {
-    res.send(puppies)
+    Puppy.findAll()
+    .then(result => {
+        res.json(result)
+    })
+    .catch(next)
 })
+
+// post a puppy
+router.post('/addAPuppy', (req, res, next) => {
+    Puppy.create(req.body)
+    .then(() => res.sendStatus(201))
+    .catch(next)
+})
+
+
 // gets one puppy
 router.get('/:id', (req, res, next) => {
     if(puppies[Number(req.params.id)]){
